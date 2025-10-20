@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -e
+if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+  echo "Помилка: ви не в git-репозиторії. Перейдіть у корінь репо і запустіть знову."
+  exit 1
+fi
+git config user.name "VitaliySkrypnyk"
+git config user.email "v.s.skrypnyk@student.khai.edu"
+CFG_FILE="git_config_with_origin.txt"
+CFG_FILE_SIMPLE="git_config.txt"
+LOG_FILE="git_log_oneline.txt"
+LOG_FILE_FULL="git_log_full.txt"
+git config --show-origin --list > "$CFG_FILE"
+git config --list > "$CFG_FILE_SIMPLE"
+git log --oneline --decorate --graph --all > "$LOG_FILE" || echo "(нема комітів для запису у $LOG_FILE)"
+git log --stat --decorate --all > "$LOG_FILE_FULL" || echo "(нема комітів для запису у $LOG_FILE_FULL)"
+echo "Збережено: $CFG_FILE, $CFG_FILE_SIMPLE, $LOG_FILE, $LOG_FILE_FULL"
